@@ -2,7 +2,7 @@
   <main>
     <div class="home">This is Home</div>
     <el-button type="primary" @click="appStore.toggleTheme(false)">切换亮色主题</el-button>
-    <el-button type="primary" @click="appStore.toggleTheme(true)">切换暗色主题</el-button>
+    <el-button type="secondary" @click="appStore.toggleTheme(true)">切换暗色主题</el-button>
   </main>
 </template>
 
