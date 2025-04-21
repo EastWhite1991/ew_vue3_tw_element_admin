@@ -43,3 +43,7 @@ pnpm test:unit
 ```sh
 pnpm lint
 ```
+
+## 插件
+
+[Pinia 持久化](https://prazdevs.github.io/pinia-plugin-persistedstate/zh/guide/advanced.html)
