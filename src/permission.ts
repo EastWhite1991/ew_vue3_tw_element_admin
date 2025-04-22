@@ -2,11 +2,7 @@ import router from '@/router'
 import Nprogress from 'nprogress'
 import { useUserStore } from '@/stores/user'
 import { useRouterStore } from '@/stores/router'
-import type {
-  NavigationGuardNext,
-  RouteLocationNormalized,
-  RouteLocationNormalizedLoaded,
-} from 'vue-router'
+import type { RouteLocationNormalized, RouteLocationNormalizedLoaded } from 'vue-router'
 import { getPageTitle } from '@/utils/helpers'
 
 Nprogress.configure({
@@ -17,44 +13,27 @@ Nprogress.configure({
 })
 
 // 白名单路由
-const WHITE_LIST = ['Login', 'Init']
+// const WHITE_LIST = ['Login', 'Init']
 
 /**
  * 路由守卫
  */
-router.beforeEach(
-  async (
-    to: RouteLocationNormalized,
-    from: RouteLocationNormalizedLoaded,
-    next: NavigationGuardNext,
-  ) => {
-    console.log('🚀 ~ next:', next)
-    console.log('🚀 ~ from:', from)
-    const userStore = useUserStore()
-    const routerStore = useRouterStore()
-    const token = userStore.token
+router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded) => {
+  console.log('🚀 ~ from:', from)
+  const userStore = useUserStore()
+  const routerStore = useRouterStore()
+  console.log('🚀 ~ routerStore:', routerStore)
+  const token = userStore.token
+  console.log('🚀 ~ token:', token)
 
-    // 进度条开始
-    Nprogress.start()
+  // 进度条开始
+  Nprogress.start()
 
-    // 设置页面标题
-    document.title = getPageTitle(to.meta.title as string, to)
+  // 设置页面标题
+  document.title = getPageTitle(to.meta.title as string, to)
 
-    if (to.meta.client) {
-      // 返回 true 意味着允许路由跳转，继续执行后续的导航逻辑。
-      return true
-    }
-
-    // 白名单路由处理
-    if (WHITE_LIST.includes(to.name as string)) {
-      if (token) {
-        if (!routerStore.asyncRouterFlag) {
-          // await setupRouter(userStore)
-        }
-      }
-    }
-  },
-)
+  return true
+})
 
 router.afterEach(() => {
   document.querySelector('.main-cont.main-right')?.scrollTo(0, 0)
