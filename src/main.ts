@@ -10,11 +10,11 @@ import 'element-plus/dist/index.css'
 import '@/permission'
 import App from '@/App.vue'
 import router from '@/router'
-import run from '@/core'
+import core from '@/core'
 
 const app = createApp(App)
 
-app.use(run)
+app.use(core)
 app.use(ElementPlus)
 app.use(createPinia())
 app.use(router)

@@ -5,6 +5,8 @@ import { useRouterStore } from '@/stores/router'
 import type { RouteLocationNormalized, RouteLocationNormalizedLoaded } from 'vue-router'
 import { getPageTitle } from '@/utils/helpers'
 
+/**   优化后的初始文件   */
+
 Nprogress.configure({
   showSpinner: false,
   easing: 'ease',
@@ -45,12 +47,14 @@ const WHITE_LIST = ['login']
  * 3. not_to('Login') && token!== null  ————> return true
  */
 router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded) => {
-  // 获取用户和路由状态
+  console.log('---------------------------------')
+  console.log('🚀 ~ router.beforeEach:')
   const userStore = useUserStore()
   const routerStore = useRouterStore()
   const token = userStore.token
-  // 使用可选链安全地获取默认路由
   const defaultRouter = userStore?.userInfo?.authority?.defaultRouter
+  console.log('🚀 ~ from:', from)
+  console.log('🚀 ~ token:', token === '')
 
   // 进度条开始
   Nprogress.start()
@@ -58,82 +62,81 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
   // 设置页面标题
   document.title = getPageTitle(to.meta.title as string, to)
 
-  // 客户端路由直接放行
   if (to.meta.client) {
     return true
   }
 
-  // 用户未登录的处理逻辑
   if (!token) {
-    // 若目标不是登录页，则重定向到登录页
     if (to.name !== 'login') {
-      return { name: 'login' }
-    }
-    // 目标是登录页且未登录，直接放行
-    return true
-  }
-
-  // 用户已登录的处理逻辑
-  if (to.name === 'login') {
-    // 若已登录但访问登录页，则重定向到有权限的页面
-
-    // 若异步路由尚未加载，先加载异步路由
-    if (!routerStore.asyncRouterFlag) {
-      await setupRouter()
-    }
-
-    // 优先重定向到用户默认路由
-    if (defaultRouter) {
-      return { name: defaultRouter }
-    } else {
-      // 无默认路由时重定向到仪表盘
-      return { name: 'dashboard' }
-    }
-  }
-
-  // 处理需要返回首页的情况
-  const needToHome = sessionStorage.getItem('needToHome') === 'true'
-  if (needToHome) {
-    sessionStorage.removeItem('needToHome')
-    return { path: '/' }
-  }
-
-  // 处理异步路由加载
-  // 若异步路由尚未加载，且来源不是白名单路由，则加载异步路由
-  if (!routerStore.asyncRouterFlag && !WHITE_LIST.includes(from.name as string)) {
-    const setupSuccess = await setupRouter()
-
-    if (setupSuccess && userStore.token) {
-      // 异步路由加载成功后的路由处理
-
-      // 关键修复：检查当前路由是否有效，避免无限重定向
-      if (to.name && router.hasRoute(to.name)) {
-        return true
-      }
-
-      // 检查默认路由权限
-      if (defaultRouter && router.hasRoute(defaultRouter)) {
-        // 关键修复：如果当前已经是默认路由，直接放行避免重定向循环
-        if (to.name === defaultRouter) {
-          return true
-        }
-        // 需要重定向到默认路由时使用replace模式
-        return { name: defaultRouter, replace: true }
-      } else {
-        // 无权限访问任何路由时跳转到404
-        return { path: '/404' }
-      }
-    } else {
-      // 路由加载失败时重定向到登录页，并保存原目标路径
+      // 1. 若用户未登录，且目标路由不是登录页，则将路由重定向到登录页。
       return {
         name: 'login',
-        query: { redirect: to.fullPath },
       }
+    } else {
+      return true
+    }
+  } else {
+    if (to.name === 'login') {
+      // 2. 若用户已登录，且目标路由是登录页，则将路由重定向到首页。
+
+      // 若 routerStore.asyncRouterFlag 为 0，意味着异步路由还未设置
+      if (!routerStore.asyncRouterFlag) {
+        // 调用 setupRouter 函数来设置异步路由
+        await setupRouter()
+      }
+
+      if (defaultRouter) {
+        // 若用户信息中的 authority.defaultRouter 存在，将路由重定向到该默认路由。
+        return { name: defaultRouter }
+      } else {
+        // 若用户信息中的 authority.defaultRouter 不存在，将路由重定向到首页。
+        return {
+          name: 'dashboard',
+        }
+      }
+    } else {
+      // 若用户已登录（token 存在），且 sessionStorage 中 needToHome 的值为 true，则移除该 sessionStorage 项，并将路由重定向到首页。
+      const needToHome = sessionStorage.getItem('needToHome') === 'true'
+      if (needToHome) {
+        sessionStorage.removeItem('needToHome')
+        return { path: '/' }
+      }
+
+      // 若 routerStore 中的 asyncRouterFlag 为 0，且当前路由不是从白名单路由跳转过来的，
+      // 意味着异步路由还未设置，就调用 setupRouter 函数来设置异步路由。
+      if (!routerStore.asyncRouterFlag && !WHITE_LIST.includes(from.name as string)) {
+        const setupSuccess = await setupRouter()
+        if (setupSuccess && userStore.token) {
+          console.log('异步路由设置成功')
+          // 检查当前路由是否已经是用户要访问的路由，如果是则直接返回true
+          if (to.name && router.hasRoute(to.name)) {
+            return true
+          }
+
+          // 若异步路由设置成功且 token 仍存在，调用 handleRedirect 函数处理路由重定向。
+          // return handleRedirect(to, userStore)
+          if (defaultRouter && router.hasRoute(defaultRouter)) {
+            // 当前路由与默认路由相同，直接放行，避免无限重定向
+            if (to.name === defaultRouter) {
+              return true
+            }
+            // 需要重定向到默认路由
+            return { name: defaultRouter, replace: true }
+          } else {
+            return { path: '/404' }
+          }
+        } else {
+          // 若设置失败，将路由重定向到登录页，并携带原目标路由的完整路径作为查询参数。
+          return {
+            name: 'login',
+            query: { redirect: to.fullPath },
+          }
+        }
+      }
+
+      return true
     }
   }
-
-  // 其他情况允许通过
-  return true
 })
 
 router.afterEach(() => {

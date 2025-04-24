@@ -5,6 +5,11 @@ import { useRouterStore } from '@/stores/router'
 import type { RouteLocationNormalized, RouteLocationNormalizedLoaded } from 'vue-router'
 import { getPageTitle } from '@/utils/helpers'
 
+/**  Cursor 优化逻辑后的代码   */
+
+/**
+ * 配置进度条
+ */
 Nprogress.configure({
   showSpinner: false,
   easing: 'ease',
@@ -12,13 +17,18 @@ Nprogress.configure({
   trickleSpeed: 200,
 })
 
-// 处理路由加载
+/**
+ * 处理异步路由加载
+ * 同时获取用户信息和路由配置，并将异步路由添加到路由系统中
+ * @returns {Promise<boolean>} 是否成功设置路由
+ */
 const setupRouter = async () => {
   try {
     const routerStore = useRouterStore()
     const userStore = useUserStore()
+    // 并行获取路由配置和用户信息，提高效率
     await Promise.all([routerStore.SetAsyncRouter(), userStore.GetUserInfo()])
-    console.log('🚀 ~ routerStore.asyncRouters:', routerStore.asyncRouters)
+    // 将异步路由添加到路由系统
     routerStore.asyncRouters.forEach((route: any) => router.addRoute(route))
     return true
   } catch (error) {
@@ -27,22 +37,21 @@ const setupRouter = async () => {
   }
 }
 
-// 白名单路由
+// 路由白名单（无需登录即可访问的路由）
 const WHITE_LIST = ['login']
+
 /**
- * 路由守卫
+ * 全局路由守卫
+ *
+ * 主要处理以下场景：
+ * 1. 用户未登录时的路由拦截与重定向
+ * 2. 用户已登录时访问登录页的重定向处理
+ * 3. 异步路由的加载与权限判断
+ * 4. 路由重定向时避免无限循环
+ *
  * @param to - 目标路由对象
  * @param from - 来源路由对象
- * @returns 路由跳转的目标位置，或者 true 表示允许路由跳转，或者 false 表示阻止路由跳转。
- * 全局路由守卫死循环：https://segmentfault.com/a/1190000022709721
- *
- * 主要考虑两种情况：
- * 1. 不跳转登录页且token为空：not_to('Login') && token === null  ————> return { name: 'Login' }
- * 2. 跳转登录页但是token不为空： to('Login') && token !== null  ————> return { path: '/' } 或者 return { path: '/dashboard' }
- * 其他情况：
- * 1. not_to('Login') && token !== null  ————> return true
- * 2. to('Login') && token === null  ————> return true
- * 3. not_to('Login') && token!== null  ————> return true
+ * @returns 路由跳转的目标位置，或允许/阻止路由跳转的布尔值
  */
 router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded) => {
   // 获取用户和路由状态
@@ -136,34 +145,31 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
   return true
 })
 
+/**
+ * 路由后置守卫
+ * 页面加载完成后的处理
+ */
 router.afterEach(() => {
+  // 滚动到页面顶部
   document.querySelector('.main-cont.main-right')?.scrollTo(0, 0)
+  // 结束进度条
   Nprogress.done()
 })
 
-// 路由错误处理
+/**
+ * 路由错误处理
+ */
 router.onError((error) => {
-  console.error('Router error:', error)
+  console.error('路由错误:', error)
   Nprogress.remove()
 })
 
-// 移除加载动画
+/**
+ * 移除初始加载动画
+ */
 const removeLoading = () => {
   const element = document.getElementById('ew-loading-box')
   element?.remove()
 }
 
 removeLoading()
-/**
-路由无限重定向这个问题的主要原因是：
-1. 当异步路由设置成功后，代码始终返回{ ...to, replace: true }创建了新的路由对象
-2. 即使用户访问的就是有权限的路由，也会创建新路由对象而不是直接放行
-3. Vue Router收到新的路由对象后，重新触发导航，导致无限循环
-
-修复方案的核心逻辑是：
-1. 先检查用户是否已经在访问一个有效路由，如果是则直接返回true放行
-2. 检查用户是否有默认路由权限，并且该路由存在
-3. 如果用户当前访问的就是默认路由，则直接放行
-4. 只在确实需要重定向时，才返回新的路由对象
-这样避免了不必要的重定向，解决了死循环问题，同时也修复了linter警告的可能undefined的问题。
- */

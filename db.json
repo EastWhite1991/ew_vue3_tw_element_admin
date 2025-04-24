@@ -1,0 +1,140 @@
+{
+  "captcha": {
+    "captchaId": "qNTCcdQmzomkxQo0k3RD",
+    "picPath": "data:image/png;base64,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",
+    "captchaLength": 6,
+    "openCaptcha": true
+  },
+  "userInfo": {
+    "ID": 1,
+    "CreatedAt": "2024-07-31T11:25:31.643+08:00",
+    "UpdatedAt": "2024-07-31T11:25:31.644+08:00",
+    "uuid": "984cbcba-0e8f-4948-ad34-617aff8401fb",
+    "userName": "admin",
+    "nickName": "Mr.奇淼",
+    "headerImg": "https://qmplusimg.henrongyi.top/gva_header.jpg",
+    "authorityId": 888,
+    "authority": {
+      "CreatedAt": "2024-07-31T11:25:31.491+08:00",
+      "UpdatedAt": "2024-07-31T11:25:31.647+08:00",
+      "DeletedAt": null,
+      "authorityId": 888,
+      "authorityName": "普通用户",
+      "parentId": 0,
+      "dataAuthorityId": null,
+      "children": null,
+      "menus": null,
+      "defaultRouter": "dashboard"
+    },
+    "authorities": [
+      {
+        "CreatedAt": "2024-07-31T11:25:31.491+08:00",
+        "UpdatedAt": "2024-07-31T11:25:31.647+08:00",
+        "DeletedAt": null,
+        "authorityId": 888,
+        "authorityName": "普通用户",
+        "parentId": 0,
+        "dataAuthorityId": null,
+        "children": null,
+        "menus": null,
+        "defaultRouter": "dashboard"
+      },
+      {
+        "CreatedAt": "2024-07-31T11:25:31.491+08:00",
+        "UpdatedAt": "2024-07-31T11:25:31.651+08:00",
+        "DeletedAt": null,
+        "authorityId": 8881,
+        "authorityName": "普通用户子角色",
+        "parentId": 888,
+        "dataAuthorityId": null,
+        "children": null,
+        "menus": null,
+        "defaultRouter": "dashboard"
+      },
+      {
+        "CreatedAt": "2024-07-31T11:25:31.491+08:00",
+        "UpdatedAt": "2024-07-31T11:25:31.649+08:00",
+        "DeletedAt": null,
+        "authorityId": 9528,
+        "authorityName": "测试角色",
+        "parentId": 0,
+        "dataAuthorityId": null,
+        "children": null,
+        "menus": null,
+        "defaultRouter": "dashboard"
+      }
+    ],
+    "phone": "17611111111",
+    "email": "333333333@qq.com",
+    "enable": 1,
+    "originSetting": null
+  },
+  "login": {
+    "user": {
+      "ID": 1,
+      "CreatedAt": "2024-07-31T11:25:31.643+08:00",
+      "UpdatedAt": "2024-07-31T11:25:31.644+08:00",
+      "uuid": "984cbcba-0e8f-4948-ad34-617aff8401fb",
+      "userName": "admin",
+      "nickName": "Mr.奇淼",
+      "headerImg": "https://qmplusimg.henrongyi.top/gva_header.jpg",
+      "authorityId": 888,
+      "authority": {
+        "CreatedAt": "2024-07-31T11:25:31.491+08:00",
+        "UpdatedAt": "2024-07-31T11:25:31.647+08:00",
+        "DeletedAt": null,
+        "authorityId": 888,
+        "authorityName": "普通用户",
+        "parentId": 0,
+        "dataAuthorityId": null,
+        "children": null,
+        "menus": null,
+        "defaultRouter": "dashboard"
+      },
+      "authorities": [
+        {
+          "CreatedAt": "2024-07-31T11:25:31.491+08:00",
+          "UpdatedAt": "2024-07-31T11:25:31.647+08:00",
+          "DeletedAt": null,
+          "authorityId": 888,
+          "authorityName": "普通用户",
+          "parentId": 0,
+          "dataAuthorityId": null,
+          "children": null,
+          "menus": null,
+          "defaultRouter": "dashboard"
+        },
+        {
+          "CreatedAt": "2024-07-31T11:25:31.491+08:00",
+          "UpdatedAt": "2024-07-31T11:25:31.651+08:00",
+          "DeletedAt": null,
+          "authorityId": 8881,
+          "authorityName": "普通用户子角色",
+          "parentId": 888,
+          "dataAuthorityId": null,
+          "children": null,
+          "menus": null,
+          "defaultRouter": "dashboard"
+        },
+        {
+          "CreatedAt": "2024-07-31T11:25:31.491+08:00",
+          "UpdatedAt": "2024-07-31T11:25:31.649+08:00",
+          "DeletedAt": null,
+          "authorityId": 9528,
+          "authorityName": "测试角色",
+          "parentId": 0,
+          "dataAuthorityId": null,
+          "children": null,
+          "menus": null,
+          "defaultRouter": "dashboard"
+        }
+      ],
+      "phone": "17611111111",
+      "email": "333333333@qq.com",
+      "enable": 1,
+      "originSetting": null
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVVUlEIjoiOTg0Y2JjYmEtMGU4Zi00OTQ4LWFkMzQtNjE3YWZmODQwMWZiIiwiSUQiOjEsIlVzZXJuYW1lIjoiYWRtaW4iLCJOaWNrTmFtZSI6Ik1yLuWlh-a3vCIsIkF1dGhvcml0eUlkIjo4ODgsIkJ1ZmZlclRpbWUiOjg2NDAwLCJpc3MiOiJxbVBsdXMiLCJhdWQiOlsiR1ZBIl0sImV4cCI6MTc0NTkxODcxNSwibmJmIjoxNzQ1MzEzOTE1fQ.dW8uWOyY9v2ryW4M2it9QOKRMb4SLZHybeoau1Ya7Xo",
+    "expiresAt": 1745918715000
+  }
+}

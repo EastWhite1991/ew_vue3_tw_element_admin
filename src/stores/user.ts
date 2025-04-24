@@ -4,16 +4,18 @@ import { useAppStore } from './app'
 import { useStorage } from '@vueuse/core'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import router from '@/router'
-import { joinInBlackList } from '@/services/user'
+import { getUserInfo, joinInBlackList, login } from '@/services/user'
+import { ElLoading, ElMessage } from 'element-plus'
+import type { IUserInfo } from '@/typings/user'
+import { useRouterStore } from './router'
 
 export const useUserStore = defineStore('user', () => {
   const appStore = useAppStore() as any
 
-  const userInfo = ref({
+  const userInfo = ref<Partial<IUserInfo>>({
     uuid: '',
     nickName: '',
     headerImg: '',
-    authority: {},
   })
   const token = useStorage('token', '')
   const cookies = useCookies(['x-token'])
@@ -34,7 +36,6 @@ export const useUserStore = defineStore('user', () => {
         }
       })
     }
-    console.log(appStore.config)
   }
 
   const setToken = (newToken: string) => {
@@ -54,6 +55,57 @@ export const useUserStore = defineStore('user', () => {
     localStorage.removeItem('originSetting')
   }
 
+  const loadingInstance = ref<any>(null)
+  const LoginIn = async (loginInfo: any) => {
+    try {
+      loadingInstance.value = ElLoading.service({
+        fullscreen: true,
+        text: '登录中，请稍候...',
+      })
+      const res = await login(loginInfo)
+      if (res.status !== 200) {
+        ElMessage.error('登录失败！')
+        return false
+      }
+      ElMessage.success('登录成功！')
+
+      // 1. 登陆成功后，设置用户信息和权限相关信息
+      setUserInfo(res.data.user)
+      setToken(res.data.token)
+
+      // 2. 初始化路由信息
+      const routerStore = useRouterStore()
+      await routerStore.SetAsyncRouter()
+      const asyncRouters = routerStore.asyncRouters
+
+      // 3. 将动态路由注册到路由表里
+      asyncRouters.forEach((route: any) => {
+        router.addRoute(route)
+      })
+
+      // 4. 检查路由表中是否存在用户权限里的默认路由。若不存在，显示错误信息；若存在，跳转到该默认路由。
+      if (!router.hasRoute(userInfo?.value?.authority?.defaultRouter as any)) {
+        console.log('没有权限，请联系管理员进行授权')
+        ElMessage.error('请联系管理员进行授权')
+      } else {
+        console.log('登录后，跳转默认路由', userInfo?.value?.authority?.defaultRouter)
+        await router.replace({ name: userInfo?.value?.authority?.defaultRouter })
+      }
+
+      // 5. 检测用户的操作系统类型，将结果存储到 localStorage 中。
+      const isWindows = /windows/i.test(navigator.userAgent)
+      window.localStorage.setItem('osType', isWindows ? 'WIN' : 'MAC')
+
+      // 6. 全部操作均结束，关闭loading并返回
+      return true
+    } catch (error) {
+      console.error('Login error...', error)
+      return false
+    } finally {
+      loadingInstance.value?.close()
+    }
+  }
+
   const Logout = async () => {
     // 调用 jsonInBlacklist 异步函数，向后端发送请求，将当前用户的 JWT 添加到黑名单中，使该令牌失效，防止被继续使用。
     const res = (await joinInBlackList()) as any
@@ -71,6 +123,15 @@ export const useUserStore = defineStore('user', () => {
     window.location.reload()
   }
 
+  /* 获取用户信息*/
+  const GetUserInfo = async () => {
+    const res = await getUserInfo()
+    if (res.status === 200) {
+      setUserInfo(res.data)
+    }
+    return res
+  }
+
   return {
     userInfo,
     token,
@@ -80,5 +141,8 @@ export const useUserStore = defineStore('user', () => {
     NeedInit,
     ClearStorage,
     Logout,
+    LoginIn,
+    loadingInstance,
+    GetUserInfo,
   }
 })
