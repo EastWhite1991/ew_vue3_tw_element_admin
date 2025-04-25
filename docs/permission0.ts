@@ -20,7 +20,6 @@ const setupRouter = async () => {
     const routerStore = useRouterStore()
     const userStore = useUserStore()
     await Promise.all([routerStore.SetAsyncRouter(), userStore.GetUserInfo()])
-    console.log('🚀 ~ routerStore.asyncRouters:', routerStore.asyncRouters)
     routerStore.asyncRouters.forEach((route: any) => router.addRoute(route))
     return true
   } catch (error) {
@@ -47,14 +46,10 @@ const WHITE_LIST = ['login']
  * 3. not_to('Login') && token!== null  ————> return true
  */
 router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded) => {
-  console.log('---------------------------------')
-  console.log('🚀 ~ router.beforeEach:')
   const userStore = useUserStore()
   const routerStore = useRouterStore()
   const token = userStore.token
   const defaultRouter = userStore?.userInfo?.authority?.defaultRouter
-  console.log('🚀 ~ from:', from)
-  console.log('🚀 ~ token:', token === '')
 
   // 进度条开始
   Nprogress.start()
@@ -107,7 +102,6 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
       if (!routerStore.asyncRouterFlag && !WHITE_LIST.includes(from.name as string)) {
         const setupSuccess = await setupRouter()
         if (setupSuccess && userStore.token) {
-          console.log('异步路由设置成功')
           // 检查当前路由是否已经是用户要访问的路由，如果是则直接返回true
           if (to.name && router.hasRoute(to.name)) {
             return true

@@ -23,6 +23,7 @@
     "@vueuse/integrations": "^13.1.0",
     "axios": "^1.8.4",
     "element-plus": "^2.9.8",
+    "mitt": "^3.0.1",
     "nprogress": "^0.2.0",
     "pinia": "^3.0.1",
     "tailwindcss": "^4.1.4",

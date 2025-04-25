@@ -19,11 +19,6 @@ const router: Router = createRouter({
       name: 'notfound',
       component: () => import('@/views/error/404.vue'),
     },
-    // 未匹配的路由
-    // {
-    //   path: '/:pathMatch(.*)*',
-    //   redirect: '/404',
-    // },
   ],
 })
 

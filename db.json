@@ -11,7 +11,7 @@
     "UpdatedAt": "2024-07-31T11:25:31.644+08:00",
     "uuid": "984cbcba-0e8f-4948-ad34-617aff8401fb",
     "userName": "admin",
-    "nickName": "Mr.奇淼",
+    "nickName": "Ian_Kevin",
     "headerImg": "https://qmplusimg.henrongyi.top/gva_header.jpg",
     "authorityId": 888,
     "authority": {
@@ -76,7 +76,7 @@
       "UpdatedAt": "2024-07-31T11:25:31.644+08:00",
       "uuid": "984cbcba-0e8f-4948-ad34-617aff8401fb",
       "userName": "admin",
-      "nickName": "Mr.奇淼",
+      "nickName": "Ian_Kevin",
       "headerImg": "https://qmplusimg.henrongyi.top/gva_header.jpg",
       "authorityId": 888,
       "authority": {
@@ -153,7 +153,7 @@
         "keepAlive": false,
         "defaultMenu": false,
         "title": "官方网站",
-        "icon": "customer-gva",
+        "icon": "homeFilled",
         "closeTab": false
       },
       "authoritys": null,

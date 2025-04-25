@@ -4,7 +4,7 @@ import { useAppStore } from './app'
 import { useStorage } from '@vueuse/core'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import router from '@/router'
-import { getUserInfo, joinInBlackList, login } from '@/services/user'
+import { getUserInfo, login } from '@/services/user'
 import { ElLoading, ElMessage } from 'element-plus'
 import type { IUserInfo } from '@/typings/user'
 import { useRouterStore } from './router'
@@ -85,10 +85,8 @@ export const useUserStore = defineStore('user', () => {
 
       // 4. 检查路由表中是否存在用户权限里的默认路由。若不存在，显示错误信息；若存在，跳转到该默认路由。
       if (!router.hasRoute(userInfo?.value?.authority?.defaultRouter as any)) {
-        console.log('没有权限，请联系管理员进行授权')
         ElMessage.error('请联系管理员进行授权')
       } else {
-        console.log('登录后，跳转默认路由', userInfo?.value?.authority?.defaultRouter)
         await router.replace({ name: userInfo?.value?.authority?.defaultRouter })
       }
 
@@ -108,16 +106,16 @@ export const useUserStore = defineStore('user', () => {
 
   const Logout = async () => {
     // 调用 jsonInBlacklist 异步函数，向后端发送请求，将当前用户的 JWT 添加到黑名单中，使该令牌失效，防止被继续使用。
-    const res = (await joinInBlackList()) as any
+    // const res = (await joinInBlackList()) as any
 
-    if (res.code !== 0) {
-      return
-    }
+    // if (res.code !== 0) {
+    //   return
+    // }
 
     await ClearStorage()
 
     router.push({
-      name: 'Login',
+      name: 'login',
       replace: true,
     })
     window.location.reload()

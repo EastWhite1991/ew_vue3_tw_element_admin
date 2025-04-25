@@ -1,10 +1,38 @@
 import { useDark, usePreferredDark } from '@vueuse/core'
 import { defineStore } from 'pinia'
-import { reactive, watchEffect } from 'vue'
+import { reactive, ref, watchEffect } from 'vue'
+
+const baseConfig: any = {
+  weakness: false,
+  grey: false,
+  primaryColor: '#3b82f6',
+  showTabs: true,
+  darkMode: 'auto',
+  layout_side_width: 256,
+  layout_side_collapsed_width: 80,
+  layout_side_item_height: 48,
+  show_watermark: true,
+  side_mode: 'normal',
+  // 页面过渡动画配置
+  transition_type: 'slide',
+}
 
 export const useAppStore = defineStore('app', () => {
-  const config = reactive({
+  const device = ref('')
+  const drawerSize = ref('')
+  const operateMinWith = ref('240')
+  const config = reactive<any>({
+    weakness: false,
+    grey: false,
+    primaryColor: '#3b82f6',
+    showTabs: true,
     darkMode: 'auto',
+    layout_side_width: 256,
+    layout_side_collapsed_width: 80,
+    layout_side_item_height: 48,
+    show_watermark: true,
+    side_mode: 'normal',
+    transition_type: 'slide', // 页面过渡动画配置
   })
 
   // useDark 用于控制和监听深色模式状态。它接受一个可选的参数，用于指定深色模式的控制方式。
@@ -53,11 +81,37 @@ export const useAppStore = defineStore('app', () => {
     isDark.value = isDarkMode
   }
 
+  const toggleDevice = (e: string) => {
+    if (e === 'mobile') {
+      drawerSize.value = '100%'
+      operateMinWith.value = '80'
+    } else {
+      drawerSize.value = '800'
+      operateMinWith.value = '240'
+    }
+    device.value = e
+  }
+
+  const toggleSideMode = (e: string) => {
+    config.side_mode = e
+  }
+
+  const resetConfig = () => {
+    for (const baseConfigKey in baseConfig) {
+      config[baseConfigKey] = baseConfig[baseConfigKey]
+    }
+  }
+
   return {
-    config,
     isDark,
-    preferredDark,
+    device,
+    drawerSize,
+    operateMinWith,
+    config,
+    toggleSideMode,
     toggleDarkMode,
     toggleTheme,
+    toggleDevice,
+    resetConfig,
   }
 })
