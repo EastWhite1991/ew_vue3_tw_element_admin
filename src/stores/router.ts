@@ -61,7 +61,7 @@ export const useRouterStore = defineStore('router', () => {
       {
         path: '/layout',
         name: 'layout',
-        component: 'views/home/index.vue',
+        component: 'views/layout/index.vue',
         meta: {
           title: '底层layout',
         },
@@ -94,7 +94,7 @@ export const useRouterStore = defineStore('router', () => {
     // KeepAliveFilter(asyncRouter)
     asyncRouters.value = baseRouter
 
-    // 最后才添加通配符路由
+    // 最后才添加通配符路由，否则会出现刷新页面跳转404的问题
     router.addRoute({
       path: '/:pathMatch(.*)*',
       redirect: '/404',
