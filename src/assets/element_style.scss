@@ -1,3 +1,38 @@
 .el-menu {
   border-right: none !important;
+  li {
+    @apply my-1;
+  }
+}
+.el-menu--vertical {
+  .el-menu-item {
+    border-radius: 2px;
+    &.is-active {
+      background-color: var(--el-color-primary) !important;
+      color: #fff !important;
+    }
+  }
+}
+
+.el-sub-menu.el-sub-menu__hide-arrow {
+  height: 44px;
+}
+
+.el-tabs__header {
+  margin: 0 0 1px !important;
+}
+
+.el-sub-menu.is-active {
+  > .el-sub-menu__title {
+    color: var(--el-color-primary) !important;
+  }
+}
+
+.el-sub-menu__title.el-tooltip__trigger,
+.el-menu-item .el-menu-tooltip__trigger {
+  justify-content: center;
+}
+
+.el-menu--horizontal .el-menu .el-sub-menu__title {
+  justify-content: flex-start;
 }
