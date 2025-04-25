@@ -15,23 +15,15 @@ const router: Router = createRouter({
       component: () => import('@/views/auth/Login.vue'),
     },
     {
-      path: '/dashboard',
-      name: 'dashboard',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('@/views/Dashboard.vue'),
-    },
-    {
       path: '/404',
       name: 'notfound',
       component: () => import('@/views/error/404.vue'),
     },
     // 未匹配的路由
-    {
-      path: '/:pathMatch(.*)*',
-      redirect: '/404',
-    },
+    // {
+    //   path: '/:pathMatch(.*)*',
+    //   redirect: '/404',
+    // },
   ],
 })
 

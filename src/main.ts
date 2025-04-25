@@ -14,9 +14,6 @@ import core from '@/core'
 
 const app = createApp(App)
 
-app.use(core)
-app.use(ElementPlus)
-app.use(createPinia())
-app.use(router)
+app.use(core).use(ElementPlus).use(createPinia()).use(router)
 
 app.mount('#app')

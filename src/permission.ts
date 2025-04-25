@@ -19,7 +19,10 @@ const setupRouter = async () => {
     const userStore = useUserStore()
     await Promise.all([routerStore.SetAsyncRouter(), userStore.GetUserInfo()])
     console.log('🚀 ~ routerStore.asyncRouters:', routerStore.asyncRouters)
-    routerStore.asyncRouters.forEach((route: any) => router.addRoute(route))
+    routerStore.asyncRouters.forEach((route: any) => {
+      router.addRoute(route)
+      console.log('添加路由:', route)
+    })
     return true
   } catch (error) {
     console.error('设置路由失败:', error)
@@ -45,6 +48,8 @@ const WHITE_LIST = ['login']
  * 3. not_to('Login') && token!== null  ————> return true
  */
 router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded) => {
+  console.log('🚀 ~ router.beforeEach ~ from:', from)
+  console.log('🚀 ~ router.beforeEach ~ to:', to)
   // 获取用户和路由状态
   const userStore = useUserStore()
   const routerStore = useRouterStore()
@@ -57,6 +62,16 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
 
   // 设置页面标题
   document.title = getPageTitle(to.meta.title as string, to)
+
+  // 在路由守卫开始处，判断用户是否已登录且需要加载异步路由
+  // 刷新页面时，浏览器会直接请求"/layout/dashboard"，但此时异步路由尚未加载，导致Vue Router找不到匹配的路径，因此提示"No match found"并跳转到404页面。
+  if (token && routerStore.asyncRouterFlag === 0) {
+    await setupRouter()
+    // 加载完路由后，需要让当前导航重新匹配一次路由
+    // return { ...to, replace: true }
+    // 关键：重新触发当前导航以匹配新添加的路由
+    return { path: to.fullPath, replace: true }
+  }
 
   // 客户端路由直接放行
   if (to.meta.client) {
@@ -79,6 +94,7 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
 
     // 若异步路由尚未加载，先加载异步路由
     if (!routerStore.asyncRouterFlag) {
+      console.log('🚀 ~ routerStore.asyncRouterFlag1:', routerStore.asyncRouterFlag)
       await setupRouter()
     }
 
@@ -101,6 +117,7 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
   // 处理异步路由加载
   // 若异步路由尚未加载，且来源不是白名单路由，则加载异步路由
   if (!routerStore.asyncRouterFlag && !WHITE_LIST.includes(from.name as string)) {
+    console.log('🚀 ~ 处理异步路由加载：routerStore.asyncRouterFlag2:', routerStore.asyncRouterFlag)
     const setupSuccess = await setupRouter()
 
     if (setupSuccess && userStore.token) {
@@ -132,6 +149,7 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
     }
   }
 
+  console.log('🚀 ~ 其他情况允许通过:')
   // 其他情况允许通过
   return true
 })
