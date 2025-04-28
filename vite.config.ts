@@ -12,7 +12,7 @@ export default defineConfig({
     // Vue3 vite 集成 sass: https://www.cnblogs.com/wt7018/p/18786855
     preprocessorOptions: {
       scss: {
-        additionalData: `@use "@/assets/variables" as *;`,
+        additionalData: `@use "@/assets/styles/variables" as *;`,
         api: 'modern-compiler', // or "modern"
       },
     },

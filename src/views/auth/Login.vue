@@ -1,16 +1,16 @@
 <template>
-  <div id="userLayout" class="w-full h-full relative">
+  <div id="userLayout" class="relative h-full w-full">
     <div
-      class="rounded-lg flex items-center justify-evenly w-full h-full md:w-screen md:h-screen md:bg-[#c2cae7] bg-white"
+      class="flex h-full w-full items-center justify-evenly rounded-lg bg-white md:h-screen md:w-screen md:bg-[#c2cae7]"
     >
-      <div class="md:w-3/5 w-10/12 h-full flex items-center justify-evenly">
+      <div class="flex h-full w-10/12 items-center justify-evenly md:w-3/5">
         <div
-          class="z-[999] pt-12 pb-10 md:w-96 w-full rounded-lg flex flex-col justify-between box-border"
+          class="z-[999] box-border flex w-full flex-col justify-between rounded-lg pt-12 pb-10 md:w-96"
         >
           <div>
             <div class="mb-9">
               <p class="text-center text-4xl font-bold">EW_VUE_ADMIN</p>
-              <p class="text-center text-sm font-normal text-gray-500 mt-2.5">
+              <p class="mt-2.5 text-center text-sm font-normal text-gray-500">
                 A management platform using Golang and Vue
               </p>
             </div>
@@ -44,12 +44,12 @@
                     v-model="loginFormData.captcha"
                     placeholder="请输入验证码"
                     size="large"
-                    class="flex-1 mr-5"
+                    class="mr-5 flex-1"
                   />
-                  <div class="w-1/3 h-11 bg-[#c3d4f2] rounded">
+                  <div class="h-11 w-1/3 rounded bg-[#c3d4f2]">
                     <img
                       v-if="picPath"
-                      class="w-full h-full"
+                      class="h-full w-full"
                       :src="picPath"
                       alt="请输入验证码"
                       @click="loginVerify()"
@@ -59,7 +59,7 @@
               </el-form-item>
               <el-form-item class="mb-6">
                 <el-button
-                  class="shadow shadow-active h-11 w-full"
+                  class="shadow-active h-11 w-full shadow"
                   type="primary"
                   size="large"
                   @click="submitForm"
@@ -68,7 +68,7 @@
               </el-form-item>
               <el-form-item class="mb-6">
                 <el-button
-                  class="shadow shadow-active h-11 w-full"
+                  class="shadow-active h-11 w-full shadow"
                   type="primary"
                   size="large"
                   @click="checkInit"
