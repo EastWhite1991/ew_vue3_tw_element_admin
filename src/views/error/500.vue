@@ -1,11 +1,13 @@
 <template>
-  <div class="not-found-container">
-    <h2 class="status-code">404</h2>
-    <p class="describe">抱歉！您访问的页面<em>走丢</em>啦...</p>
-    <p class="timeout">
-      <em>{{ endTime }}</em
-      >秒后自动返回首页
+  <div class="no-authority-container">
+    <h2 class="status-code">500</h2>
+    <p class="describe">抱歉！您访问的页面出现<em>异常</em>...</p>
+    <p class="suggest">请联系管理员</p>
+    <!--
+ <p class="timeout">
+      <em>{{ endTime }}</em>秒后自动返回首页
     </p>
+-->
     <el-button @click="jump(0)">返回</el-button>
     <el-button type="primary" @click="jump(1)">首页</el-button>
     <el-button type="primary" @click="jump(2)">重新登录</el-button>
@@ -14,7 +16,7 @@
 
 <script setup lang="ts">
 defineOptions({
-  name: 'NotFoundView',
+  name: 'ServerErrorView',
 })
 
 const router = useRouter()
@@ -30,11 +32,11 @@ watch(endTime, (newVal) => {
   }
 })
 
-onMounted(() => {
-  timer.value = window.setInterval(() => {
-    endTime.value--
-  }, 1000)
-})
+// onMounted(() => {
+//   timer.value = window.setInterval(() => {
+//     endTime.value--
+//   }, 1000)
+// })
 
 const jump = (type: number) => {
   switch (type) {
@@ -54,7 +56,7 @@ const jump = (type: number) => {
 </script>
 
 <style lang="scss" scoped>
-.not-found-container {
+.no-authority-container {
   position: absolute;
   top: 20%;
   left: 50%;
@@ -65,12 +67,18 @@ const jump = (type: number) => {
     font-size: 10em;
   }
   .describe {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     font-size: 26px;
     & > em {
       font-style: normal;
       color: var(--el-color-warning);
     }
+  }
+  .suggest {
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: left;
+    color: var(--el-text-color-placeholder);
   }
   .timeout {
     margin-bottom: 30px;
@@ -78,6 +86,26 @@ const jump = (type: number) => {
     > em {
       margin: 0 10px;
       color: var(--el-color-warning);
+    }
+  }
+}
+
+.error-container {
+  margin: 0 auto;
+  padding-top: 100px;
+  width: 800px;
+  max-width: 100%;
+  .other-go {
+    font-size: 14px;
+    li {
+      padding-bottom: 5px;
+      cursor: pointer;
+    }
+    a {
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }

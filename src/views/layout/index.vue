@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-gray-50 text-slate-700 dark:text-slate-500 dark:bg-slate-800 w-screen h-screen">
+  <div class="h-screen w-screen bg-gray-50 text-slate-700 dark:bg-slate-800 dark:text-slate-500">
     <LayoutHeader />
-    <div class="flex flex-row w-full gva-container pt-16 box-border h-full">
+    <div class="gva-container box-border flex h-full w-full flex-row pt-16">
       <aside-view
         v-if="
           config.side_mode === 'normal' ||
@@ -10,7 +10,7 @@
         "
       />
       <aside-view v-if="config.side_mode === 'combination' && device !== 'mobile'" mode="normal" />
-      <div class="flex-1 px-2 w-0 h-full">
+      <div class="h-full w-0 flex-1 px-2">
         <history-tabs v-if="config.showTabs" />
         <div
           class="overflow-auto"
@@ -33,16 +33,10 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, reactive, ref, watchEffect } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/user'
 import LayoutHeader from './header/index.vue'
 import AsideView from '@/views/layout/aside/index.vue'
 import HistoryTabs from './tabs/index.vue'
 import { emitter } from '@/utils/bus'
-import { useAppStore } from '@/stores/app'
-import { useRouterStore } from '@/stores/router'
 
 const appStore = useAppStore()
 const { config, isDark, device } = storeToRefs(appStore)

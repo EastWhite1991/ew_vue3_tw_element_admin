@@ -1,16 +1,16 @@
 <template>
   <div
-    class="flex justify-between fixed top-0 left-0 right-0 z-10 h-16 bg-white text-slate-700 dark:text-slate-300 dark:bg-slate-900 shadow dark:shadow-gray-700 items-center px-2"
+    class="fixed top-0 right-0 left-0 z-10 flex h-16 items-center justify-between bg-white px-2 text-slate-700 shadow dark:bg-slate-900 dark:text-slate-300 dark:shadow-gray-700"
   >
-    <div class="flex items-center cursor-pointer flex-1">
+    <div class="flex flex-1 cursor-pointer items-center">
       <div
-        class="flex items-center cursor-pointer"
+        class="flex cursor-pointer items-center"
         :class="isMobile ? '' : 'min-w-48'"
         @click="router.push({ path: '/' })"
       >
         <div
           v-if="!isMobile"
-          class="inline-flex font-bold text-2xl ml-2"
+          class="ml-2 inline-flex text-2xl font-bold"
           :class="
             (config.side_mode === 'head' || config.side_mode === 'combination') && 'min-w-fit'
           "
@@ -39,9 +39,9 @@
     <div class="flex items-center">
       <Tools />
       <el-dropdown>
-        <div class="flex justify-center items-center h-full w-full">
+        <div class="flex h-full w-full items-center justify-center">
           <span
-            class="cursor-pointer flex justify-center items-center text-black dark:text-gray-100"
+            class="flex cursor-pointer items-center justify-center text-black dark:text-gray-100"
           >
             <span v-show="!isMobile" class="w-16">{{ userStore.userInfo.nickName }}</span>
             <el-icon>
@@ -79,12 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
-import { useAppStore } from '@/stores/app'
 import { fmtTitle } from '@/utils/helpers'
-import { useUserStore } from '@/stores/user'
 import Tools from './tools.vue'
 
 defineOptions({

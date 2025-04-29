@@ -3,7 +3,7 @@
   <el-sub-menu
     ref="subMenu"
     :index="routerInfo.name"
-    class="gva-sub-menu dark:text-slate-300 relative"
+    class="gva-sub-menu relative dark:text-slate-300"
   >
     <!-- 定义子菜单标题 -->
     <template #title>
@@ -38,12 +38,6 @@
 </template>
 
 <script setup lang="ts">
-import { inject, computed } from 'vue'
-// 导入应用状态管理模块
-// 导入 Pinia 工具函数
-import { storeToRefs } from 'pinia'
-// 创建应用状态管理实例
-import { useAppStore } from '@/stores/app'
 const appStore = useAppStore()
 // 从应用状态中解构出 config 并转换为响应式引用
 const { config } = storeToRefs(appStore)

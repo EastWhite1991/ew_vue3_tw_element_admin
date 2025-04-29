@@ -1,7 +1,8 @@
 <template>
-  <div class="not-found-container">
-    <h2 class="status-code">404</h2>
-    <p class="describe">抱歉！您访问的页面<em>走丢</em>啦...</p>
+  <div class="no-authority-container">
+    <h2 class="status-code">401</h2>
+    <p class="describe">抱歉！您<em>没有权限</em>访问该页面...</p>
+    <p class="suggest">如有不满请联系您的领导</p>
     <p class="timeout">
       <em>{{ endTime }}</em
       >秒后自动返回首页
@@ -14,7 +15,7 @@
 
 <script setup lang="ts">
 defineOptions({
-  name: 'NotFoundView',
+  name: 'NoAuthorityView',
 })
 
 const router = useRouter()
@@ -36,7 +37,7 @@ onMounted(() => {
   }, 1000)
 })
 
-const jump = (type: number) => {
+const jump = (type: any) => {
   switch (type) {
     case 0:
       router.back()
@@ -54,7 +55,7 @@ const jump = (type: number) => {
 </script>
 
 <style lang="scss" scoped>
-.not-found-container {
+.no-authority-container {
   position: absolute;
   top: 20%;
   left: 50%;
@@ -65,12 +66,18 @@ const jump = (type: number) => {
     font-size: 10em;
   }
   .describe {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     font-size: 26px;
     & > em {
       font-style: normal;
       color: var(--el-color-warning);
     }
+  }
+  .suggest {
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: left;
+    color: var(--el-text-color-placeholder);
   }
   .timeout {
     margin-bottom: 30px;
@@ -78,6 +85,25 @@ const jump = (type: number) => {
     > em {
       margin: 0 10px;
       color: var(--el-color-warning);
+    }
+  }
+}
+.error-container {
+  margin: 0 auto;
+  padding-top: 100px;
+  width: 800px;
+  max-width: 100%;
+  .other-go {
+    font-size: 14px;
+    li {
+      padding-bottom: 5px;
+      cursor: pointer;
+    }
+    a {
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }

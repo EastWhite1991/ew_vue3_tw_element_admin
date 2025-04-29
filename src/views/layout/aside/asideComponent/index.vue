@@ -9,7 +9,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 // 导入所需组件
 import MenuItem from './menuItem.vue'
 import AsyncSubmenu from './asyncSubmenu.vue'

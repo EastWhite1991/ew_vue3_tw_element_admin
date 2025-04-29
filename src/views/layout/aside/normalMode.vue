@@ -1,7 +1,7 @@
 <template>
   <div
-    class="relative h-full bg-white text-slate-700 dark:text-slate-300 dark:bg-slate-900 shadow dark:shadow-gray-700"
-    :class="isCollapse ? '' : '  px-2'"
+    class="relative h-full bg-white text-slate-700 shadow dark:bg-slate-900 dark:text-slate-300 dark:shadow-gray-700"
+    :class="isCollapse ? '' : 'px-2'"
     :style="{
       width: layoutSideWidth + 'px',
     }"
@@ -13,7 +13,7 @@
         :collapse="isCollapse"
         :collapse-transition="false"
         :default-active="active"
-        class="border-r-0 w-full"
+        class="w-full border-r-0"
         unique-opened
         @select="selectMenuItem"
       >
@@ -26,7 +26,7 @@
     </el-scrollbar>
     <!-- 折叠/展开按钮 -->
     <div
-      class="absolute bottom-8 right-2 w-8 h-8 bg-gray-50 dark:bg-slate-800 flex items-center justify-center rounded cursor-pointer"
+      class="absolute right-2 bottom-8 flex h-8 w-8 cursor-pointer items-center justify-center rounded bg-gray-50 dark:bg-slate-800"
       :class="isCollapse ? 'right-0 left-0 mx-auto' : 'right-2'"
       @click="toggleCollapse"
     >
@@ -44,11 +44,7 @@
 <script setup lang="ts">
 // 导入组件和工具函数
 import AsideComponent from './asideComponent/index.vue'
-import { ref, provide, watchEffect, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { storeToRefs } from 'pinia'
-import { useAppStore } from '@/stores/app'
-import { useRouterStore } from '@/stores/router'
+
 // 获取应用状态
 const appStore = useAppStore()
 const { device, config } = storeToRefs(appStore)

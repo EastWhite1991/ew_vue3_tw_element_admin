@@ -4,7 +4,7 @@
       v-model="activeValue"
       :closable="!(historyMenus.length === 1 && route.name === defaultRouter)"
       type="card"
-      class="bg-white text-slate-700 dark:text-slate-500 dark:bg-slate-900"
+      class="bg-white text-slate-700 dark:bg-slate-900 dark:text-slate-500"
       @contextmenu.prevent="openContextMenu($event)"
       @tab-click="changeTab"
       @tab-remove="removeTab"
@@ -24,7 +24,7 @@
             :class="
               activeValue === getFmtString(item)
                 ? 'text-active'
-                : 'text-gray-600 dark:text-slate-400 '
+                : 'text-gray-600 dark:text-slate-400'
             "
             ><i
               :class="
@@ -54,9 +54,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted, ref, watch, nextTick } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/user'
 import { emitter } from '@/utils/bus.js'
 import { fmtTitle } from '@/utils/helpers'
 
@@ -369,11 +366,11 @@ const middleCloseTab = (e: any) => {
 
 <style lang="scss" scoped>
 .contextmenu {
-  @apply bg-white dark:bg-slate-900 w-28 m-0 py-2.5 px-0 border border-gray-200 text-sm shadow-md rounded absolute z-50 border-solid dark:border-slate-800;
+  @apply absolute z-50 m-0 w-28 rounded border border-solid border-gray-200 bg-white px-0 py-2.5 text-sm shadow-md dark:border-slate-800 dark:bg-slate-900;
 }
 
 .contextmenu li {
-  @apply text-slate-700 dark:text-slate-200 text-base list-none px-4 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer;
+  @apply cursor-pointer list-none px-4 py-1.5 text-base text-slate-700 hover:bg-gray-100 dark:text-slate-200 dark:hover:bg-gray-600;
 }
 
 $base-tag-item-height: 4rem;

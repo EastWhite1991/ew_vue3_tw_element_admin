@@ -46,6 +46,7 @@ const WHITE_LIST = ['login']
  * 3. not_to('Login') && token!== null  ————> return true
  */
 router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded) => {
+  console.log('1. 进入路由守卫')
   // 获取用户和路由状态
   const userStore = useUserStore()
   const routerStore = useRouterStore()
@@ -62,6 +63,10 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
   // 在路由守卫开始处，判断用户是否已登录且需要加载异步路由
   // 刷新页面时，浏览器会直接请求"/layout/dashboard"，但此时异步路由尚未加载，导致Vue Router找不到匹配的路径，因此提示"No match found"并跳转到404页面。
   if (token && routerStore.asyncRouterFlag === 0) {
+    console.log(
+      '🚀 ~ router.beforeEach ~ routerStore.asyncRouterFlag:',
+      routerStore.asyncRouterFlag,
+    )
     await setupRouter()
     // 加载完路由后，需要让当前导航重新匹配一次路由
     // return { ...to, replace: true }
@@ -147,24 +152,26 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
   return true
 })
 
+// 移除加载动画
+const removeLoading = () => {
+  console.log('2. 移除加载动画')
+  const element = document.getElementById('ew-loading-box')
+  element?.remove()
+}
+
 router.afterEach(() => {
   document.querySelector('.main-cont.main-right')?.scrollTo(0, 0)
   Nprogress.done()
+  removeLoading()
 })
 
 // 路由错误处理
 router.onError((error) => {
   console.error('Router error:', error)
   Nprogress.remove()
+  removeLoading()
 })
 
-// 移除加载动画
-const removeLoading = () => {
-  const element = document.getElementById('ew-loading-box')
-  element?.remove()
-}
-
-removeLoading()
 /**
 路由无限重定向这个问题的主要原因是：
 1. 当异步路由设置成功后，代码始终返回{ ...to, replace: true }创建了新的路由对象

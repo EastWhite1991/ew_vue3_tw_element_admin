@@ -1,8 +1,8 @@
 <template>
-  <div class="flex items-center gap-4 mr-6">
+  <div class="mr-6 flex items-center gap-4">
     <el-tooltip class="" effect="dark" content="刷新" placement="bottom">
       <el-icon
-        class="w-8 h-8 shadow rounded-full border border-gray-200 dark:border-gray-600 cursor-pointer border-solid"
+        class="h-8 w-8 cursor-pointer rounded-full border border-solid border-gray-200 shadow dark:border-gray-600"
         :class="showRefreshAnimation ? 'animate-spin' : ''"
         @click="toggleRefresh"
       >
@@ -12,14 +12,14 @@
     <el-tooltip class="" effect="dark" content="切换主题" placement="bottom">
       <el-icon
         v-if="appStore.isDark"
-        class="w-8 h-8 shadow rounded-full border border-gray-600 cursor-pointer border-solid"
+        class="h-8 w-8 cursor-pointer rounded-full border border-solid border-gray-600 shadow"
         @click="appStore.toggleTheme(false)"
       >
         <Sunny />
       </el-icon>
       <el-icon
         v-else
-        class="w-8 h-8 shadow rounded-full border border-gray-200 cursor-pointer border-solid"
+        class="h-8 w-8 cursor-pointer rounded-full border border-solid border-gray-200 shadow"
         @click="appStore.toggleTheme(true)"
       >
         <Moon />
@@ -35,9 +35,7 @@ defineOptions({
   name: 'ToolsView',
 })
 
-import { ref } from 'vue'
 import { emitter } from '@/utils/bus'
-import { useAppStore } from '@/stores/app'
 
 const appStore = useAppStore()
 // const showSettingDrawer = ref(false)

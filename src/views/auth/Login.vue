@@ -84,10 +84,8 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
 import { getCaptcha } from '@/services/user'
 import { ElMessage } from 'element-plus'
-import { useUserStore } from '@/stores/user'
 import type { ILoginForm } from '@/typings/user'
 
 defineOptions({

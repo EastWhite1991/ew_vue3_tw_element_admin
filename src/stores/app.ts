@@ -1,6 +1,4 @@
 import { useDark, usePreferredDark } from '@vueuse/core'
-import { defineStore } from 'pinia'
-import { reactive, ref, watchEffect } from 'vue'
 
 const baseConfig: any = {
   weakness: false,
