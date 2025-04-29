@@ -1,6 +1,6 @@
 <template>
   <div class="mr-6 flex items-center gap-4">
-    <el-tooltip class="" effect="dark" content="刷新" placement="bottom">
+    <el-tooltip effect="dark" content="刷新页面" placement="bottom" :show-after="500">
       <el-icon
         class="h-8 w-8 cursor-pointer rounded-full border border-solid border-gray-200 shadow dark:border-gray-600"
         :class="showRefreshAnimation ? 'animate-spin' : ''"
@@ -9,7 +9,23 @@
         <Refresh />
       </el-icon>
     </el-tooltip>
-    <el-tooltip class="" effect="dark" content="切换主题" placement="bottom">
+    <el-tooltip effect="dark" content="切换全屏" placement="bottom" :show-after="500">
+      <el-icon
+        class="h-8 w-8 cursor-pointer rounded-full border border-solid border-gray-200 shadow dark:border-gray-600"
+        @click="toggleFullScreen()"
+      >
+        <FullScreen v-if="!isFullscreen" />
+        <CopyDocument v-if="isFullscreen" />
+      </el-icon>
+    </el-tooltip>
+    <el-tooltip effect="dark" content="清理缓存" placement="bottom" :show-after="500">
+      <el-icon
+        class="h-8 w-8 cursor-pointer rounded-full border border-solid border-gray-200 shadow dark:border-gray-600"
+        @click="clearCache()"
+        ><DeleteFilled
+      /></el-icon>
+    </el-tooltip>
+    <el-tooltip effect="dark" content="切换主题" placement="bottom" :show-after="500">
       <el-icon
         v-if="appStore.isDark"
         class="h-8 w-8 cursor-pointer rounded-full border border-solid border-gray-600 shadow"
@@ -36,10 +52,25 @@ defineOptions({
 })
 
 import { emitter } from '@/utils/bus'
+import { useFullscreen } from '@vueuse/core'
+import { ElMessage } from 'element-plus'
 
 const appStore = useAppStore()
 // const showSettingDrawer = ref(false)
 const showRefreshAnimation = ref(false)
+
+const { isSupported, isFullscreen, toggle } = useFullscreen()
+
+const toggleFullScreen = () => {
+  if (isSupported.value) {
+    toggle()
+  } else {
+    ElMessage({
+      message: `Your browser doesn't support full screen`,
+      type: 'warning',
+    })
+  }
+}
 
 const toggleRefresh = () => {
   showRefreshAnimation.value = true
@@ -47,6 +78,14 @@ const toggleRefresh = () => {
   setTimeout(() => {
     showRefreshAnimation.value = false
   }, 1000)
+}
+
+const clearCache = () => {
+  ElMessage({
+    message: '功能暂未开放',
+    type: 'warning',
+  })
+  // 可以参考：https://github.com/gmingchen/agile-admin
 }
 
 const first = ref('')

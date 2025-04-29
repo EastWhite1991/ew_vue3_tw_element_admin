@@ -1,11 +1,16 @@
+
 # 路由问题分析与解决方案
+
+## 参考方案
+
+[agile-admin](https://github.com/gmingchen/agile-admin)
 
 ## 问题描述
 
-1. 在访问"http://localhost:5173/layout/dashboard"时控制台出现 `[Vue Router warn]: No match found for location with path "/layout/dashboard"`
-2. 在访问"http://localhost:5173/layout/admin/authority"时控制台出现 `[Vue Router warn]: No match found for location with path "/layout/admin/authority"`
+1. 在访问"<http://localhost:5173/layout/dashboard"时控制台出现> `[Vue Router warn]: No match found for location with path "/layout/dashboard"`
+2. 在访问"<http://localhost:5173/layout/admin/authority"时控制台出现> `[Vue Router warn]: No match found for location with path "/layout/admin/authority"`
 3. 发现在访问其他的页面或者刷新页面的时候也会出现类似的警告
-4. 但在访问"http://localhost:5173/"时不会出现这个警告。
+4. 但在访问"<http://localhost:5173/"时不会出现这个警告。>
 
 ## 一、当前系统路由结构分析
 
@@ -24,6 +29,7 @@
    - 其他子路由...
 
 3. **路由加载流程**：
+
    ```javascript
    // 1. 应用初始化时加载基础路由
    // 2. 用户登录后通过setupRouter加载异步路由
@@ -50,6 +56,7 @@
 ## 三、解决方案
 
 1. **修改路由初始化策略**：
+
 ```typescript
 // router/index.ts
 import { createRouter, createWebHistory } from 'vue-router'
@@ -107,6 +114,7 @@ export async function setupAsyncRoutes() {
 ```
 
 2. **修改导航守卫逻辑**：
+
 ```typescript
 // permission.ts
 router.beforeEach(async (to, from) => {
@@ -133,6 +141,7 @@ router.beforeEach(async (to, from) => {
 ```
 
 3. **添加路由状态管理**：
+
 ```typescript
 // stores/user.ts
 export const useUserStore = defineStore('user', {
@@ -151,6 +160,7 @@ export const useUserStore = defineStore('user', {
 ```
 
 4. **处理登出逻辑**：
+
 ```typescript
 // 登出时重置路由状态
 async function logout() {
@@ -172,4 +182,4 @@ async function logout() {
 
 3. **错误处理**：
    - 添加全局路由错误处理
-   - 提供友好的错误提示 
+   - 提供友好的错误提示
