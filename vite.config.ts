@@ -54,7 +54,6 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': aliasPath('./src'),
-        // '@utils': aliasPath('./src/common/utils'),
         // '@enums': aliasPath('./src/common/enums'),
         // '@constants': aliasPath('./src/common/constants'),
         // '@stores': aliasPath('./src/stores/modules'),

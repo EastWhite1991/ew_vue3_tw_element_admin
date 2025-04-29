@@ -9,5 +9,5 @@ export const register = (app: App) => {
     app.component(key, component)
   }
 
-  app.config.globalProperties.$EW_VUE_ADMIN = appInfo
+  app.config.globalProperties.$appInfo = appInfo
 }

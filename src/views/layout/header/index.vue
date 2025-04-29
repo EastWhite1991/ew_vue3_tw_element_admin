@@ -15,7 +15,7 @@
             (config.side_mode === 'head' || config.side_mode === 'combination') && 'min-w-fit'
           "
         >
-          EW_VUE_ADMIN
+          {{ appInfo.appName }}
         </div>
       </div>
 
@@ -81,11 +81,13 @@
 <script setup lang="ts">
 import { fmtTitle } from '@/utils/helpers'
 import Tools from './tools.vue'
+import { useGetGlobals } from '@/utils/globals'
 
 defineOptions({
   name: 'LayoutHeader',
 })
 
+const { appInfo } = useGetGlobals()
 const userStore = useUserStore()
 const appStore = useAppStore()
 const { device, config } = storeToRefs(appStore)
