@@ -1,3 +1,34 @@
 @import './base.css';
 @import 'tailwindcss';
 @custom-variant dark (&:where(.dark, .dark *));
+
+/* 如果有配置文件，可以引入：@config '../tailwind.config.js'; */
+
+@theme {
+  --deepblue-500: #023047;
+  --amble-500: #fb8500;
+  --alabaster-500: #e0e1dd;
+}
+
+.bg-deepblue {
+  background-color: var(--deepblue-500);
+}
+
+.bg-amber {
+  background-color: var(--amble-500);
+}
+
+.text-alabaster {
+  color: var(--alabaster-500);
+}
+
+.text-amber {
+  color: var(--amble-500);
+}
+
+/* 新版的 Utility 用法 */
+@utility container{
+  padding: 20px;
+  max-width: 1280px;
+  margin: auto;
+}
