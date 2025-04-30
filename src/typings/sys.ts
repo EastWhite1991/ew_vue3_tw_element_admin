@@ -61,3 +61,11 @@ export interface ApiResponse<T> {
   data: T
   message?: string
 }
+
+export interface IAppInfo {
+  appName: string
+  appLogo: string
+  appDesc: string
+  appVersion: string
+  appAuthor: string
+}
