@@ -1,6 +1,26 @@
 import { useDark, usePreferredDark } from '@vueuse/core'
+import { ref, reactive, watchEffect } from 'vue'
+import { defineStore } from 'pinia'
 
-const baseConfig: any = {
+/**
+ * 应用配置接口
+ */
+export interface AppConfig {
+  weakness: boolean;
+  grey: boolean;
+  primaryColor: string;
+  showTabs: boolean;
+  darkMode: 'auto' | 'dark' | 'light';
+  layout_side_width: number;
+  layout_side_collapsed_width: number;
+  layout_side_item_height: number;
+  show_watermark: boolean;
+  side_mode: 'normal' | 'compact' | 'mini' | 'head' | 'combination';
+  transition_type: string;
+  [key: string]: string | number | boolean;
+}
+
+const baseConfig: AppConfig = {
   weakness: false,
   grey: false,
   primaryColor: '#3b82f6',
@@ -16,10 +36,10 @@ const baseConfig: any = {
 }
 
 export const useAppStore = defineStore('app', () => {
-  const device = ref('')
+  const device = ref<'desktop' | 'mobile'>('desktop')
   const drawerSize = ref('')
   const operateMinWith = ref('240')
-  const config = reactive<any>({
+  const config = reactive<AppConfig>({
     weakness: false,
     grey: false,
     primaryColor: '#3b82f6',
@@ -71,7 +91,7 @@ export const useAppStore = defineStore('app', () => {
     }
   })
 
-  const toggleDarkMode = (mode: string) => {
+  const toggleDarkMode = (mode: 'auto' | 'dark' | 'light') => {
     config.darkMode = mode
   }
 
@@ -79,7 +99,7 @@ export const useAppStore = defineStore('app', () => {
     isDark.value = isDarkMode
   }
 
-  const toggleDevice = (e: string) => {
+  const toggleDevice = (e: 'desktop' | 'mobile') => {
     if (e === 'mobile') {
       drawerSize.value = '100%'
       operateMinWith.value = '80'
@@ -90,7 +110,7 @@ export const useAppStore = defineStore('app', () => {
     device.value = e
   }
 
-  const toggleSideMode = (e: string) => {
+  const toggleSideMode = (e: 'normal' | 'compact' | 'mini' | 'head' | 'combination') => {
     config.side_mode = e
   }
 

@@ -92,6 +92,7 @@
     "watchEffect": true,
     "watchPostEffect": true,
     "watchSyncEffect": true,
-    "RouterItem": true
+    "RouterItem": true,
+    "AppConfig": true
   }
 }

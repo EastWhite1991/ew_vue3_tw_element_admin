@@ -44,6 +44,7 @@
 <script setup lang="ts">
 // 导入组件和工具函数
 import AsideComponent from './asideComponent/index.vue'
+import type { RouteParamsRaw } from 'vue-router'
 
 // 获取应用状态
 const appStore = useAppStore()
@@ -55,14 +56,14 @@ defineOptions({
 })
 
 // 获取当前路由和路由实例
-const route = useRoute() as any
+const route = useRoute()
 const router = useRouter()
 // 获取路由状态
 const routerStore = useRouterStore()
 // 定义折叠状态
 const isCollapse = ref(false)
 // 定义当前激活菜单项
-const active = ref<any>('')
+const active = ref<string>('')
 // 计算侧边栏宽度
 const layoutSideWidth = computed(() => {
   if (!isCollapse.value) {
@@ -74,10 +75,10 @@ const layoutSideWidth = computed(() => {
 // 监听路由变化，更新激活菜单项
 watchEffect(() => {
   if (route.name === 'Iframe') {
-    active.value = decodeURIComponent(route?.query?.url)
+    active.value = decodeURIComponent((route?.query?.url as string) || '')
     return
   }
-  active.value = route.meta.activeName || route.name
+  active.value = (route.meta.activeName as string) || (route.name as string)
 })
 
 // 监听设备类型变化，更新折叠状态
@@ -93,12 +94,12 @@ watchEffect(() => {
 provide('isCollapse', isCollapse)
 
 // 菜单项选择处理函数
-const selectMenuItem = (index: any) => {
-  const query: any = {}
-  const params: any = {}
+const selectMenuItem = (index: string) => {
+  const query: Record<string, string> = {}
+  const params: RouteParamsRaw = {}
   // 处理路由参数
   if (routerStore?.routeMap[index]?.parameters) {
-    routerStore.routeMap[index]?.parameters.forEach((item: any) => {
+    routerStore.routeMap[index]?.parameters?.forEach((item: { [key: string]: string }) => {
       if (item.type === 'query') {
         query[item.key] = item.value
       } else {

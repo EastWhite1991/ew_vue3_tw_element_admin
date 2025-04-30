@@ -22,7 +22,7 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const endTime = ref(10)
-const timer = ref(-1)
+const timer = ref<number>(-1)
 
 watch(endTime, (newVal) => {
   if (newVal === 0) {
@@ -37,7 +37,7 @@ onMounted(() => {
   }, 1000)
 })
 
-const jump = (type: any) => {
+const jump = (type: 0 | 1 | 2) => {
   switch (type) {
     case 0:
       router.back()

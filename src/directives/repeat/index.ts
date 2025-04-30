@@ -3,8 +3,11 @@
  * @param {*}
  * @return {*}
  */
-export default {
-  mounted(el: any, binding: any) {
+import type { Directive, DirectiveBinding } from 'vue'
+
+// 防止重复提交的指令
+const vRepeat: Directive = {
+  mounted(el: HTMLElement & { disabled?: boolean }, binding: DirectiveBinding<number>) {
     el.addEventListener('click', () => {
       if (!el.disabled) {
         el.disabled = true
@@ -15,3 +18,5 @@ export default {
     })
   },
 }
+
+export default vRepeat

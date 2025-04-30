@@ -102,7 +102,7 @@ const initPage = () => {
     first.value = '⌘'
   }
   // 当用户同时按下ctrl和k键的时候
-  const handleKeyDown = (e: any) => {
+  const handleKeyDown = (e: KeyboardEvent) => {
     if (e.ctrlKey && e.key === 'k') {
       // 阻止浏览器默认事件
       e.preventDefault()

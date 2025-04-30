@@ -18,7 +18,10 @@
         >
           <router-view v-if="reloadFlag" v-slot="{ Component, route }">
             <div id="gva-base-load-dom" class="gva-body-h bg-gray-50 dark:bg-slate-800">
-              <transition mode="out-in" :name="route.meta.transitionType || config.transition_type">
+              <transition
+                mode="out-in"
+                :name="(route.meta.transitionType as string) || config.transition_type"
+              >
                 <keep-alive :include="routerStore.keepAliveRouters">
                   <component :is="Component" :key="route.fullPath" />
                 </keep-alive>
@@ -42,7 +45,7 @@ const appStore = useAppStore()
 const { config, isDark, device } = storeToRefs(appStore)
 
 const router = useRouter()
-const route = useRoute()
+const route = useRoute() as any
 const routerStore = useRouterStore()
 const font = reactive({
   color: 'rgba(0, 0, 0, .15)',
@@ -67,7 +70,7 @@ onMounted(() => {
 })
 
 const reloadFlag = ref<boolean>(true)
-let reloadTimer: any = null
+let reloadTimer: ReturnType<typeof window.setTimeout> | null = null
 const reload = async () => {
   if (reloadTimer) {
     window.clearTimeout(reloadTimer)

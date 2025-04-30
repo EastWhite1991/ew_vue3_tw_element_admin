@@ -25,7 +25,7 @@
         class="ml-4"
       >
         <el-breadcrumb-item v-for="item in matched?.slice(1, matched.length)" :key="item.path">
-          {{ fmtTitle(item.meta.title, route) }}
+          {{ formatTitle(item.meta.title, route) }}
         </el-breadcrumb-item>
       </el-breadcrumb>
       <!-- <gva-aside v-if="config.side_mode === 'head' && !isMobile" class="flex-1" />
@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { fmtTitle } from '@/utils/helpers'
+import { formatTitle } from '@/utils/helpers'
 import Tools from './tools.vue'
 import { useGetGlobals } from '@/utils/globals'
 
@@ -97,7 +97,7 @@ const isMobile = computed(() => {
 
 const router = useRouter()
 const route = useRoute()
-const matched = computed(() => route.matched)
+const matched = computed(() => route.matched) as any
 
 const toPerson = () => {
   router.push({ name: 'person' })
