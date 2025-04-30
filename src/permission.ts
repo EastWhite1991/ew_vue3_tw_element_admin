@@ -2,8 +2,13 @@ import router from '@/router'
 import Nprogress from 'nprogress'
 import { useUserStore } from '@/stores/user'
 import { useRouterStore } from '@/stores/router'
-import type { RouteLocationNormalized, RouteLocationNormalizedLoaded } from 'vue-router'
+import type {
+  RouteLocationNormalized,
+  RouteLocationNormalizedLoaded,
+  RouteRecordRaw,
+} from 'vue-router'
 import { getPageTitle } from '@/utils/helpers'
+import type { RouterItem } from './typings/sys'
 
 Nprogress.configure({
   showSpinner: false,
@@ -18,8 +23,8 @@ const setupRouter = async () => {
     const routerStore = useRouterStore()
     const userStore = useUserStore()
     await Promise.all([routerStore.SetAsyncRouter(), userStore.GetUserInfo()])
-    routerStore.asyncRouters.forEach((route: any) => {
-      router.addRoute(route)
+    routerStore.asyncRouters.forEach((route: RouterItem) => {
+      router.addRoute(route as unknown as RouteRecordRaw)
     })
     return true
   } catch (error) {

@@ -25,3 +25,39 @@ interface IMenuMeta {
   icon: string
   closeTab: boolean
 }
+
+export interface RouterItem {
+  path: string
+  name: string
+  component: string | (() => Promise<any>)
+  parent?: RouterItem
+  children?: RouterItem[]
+  hidden?: boolean
+  meta: {
+    title: string
+    btns?: any
+    hidden?: boolean
+    keepAlive?: boolean
+    defaultMenu?: boolean
+    closeTab?: boolean
+    path?: string
+    icon?: string
+    activeName?: string
+  }
+  parameters?: { [key: string]: string }[]
+  btns?: any
+}
+
+export interface RouteMap {
+  [key: string]: RouterItem
+}
+
+export interface PathInfoMap {
+  [key: string]: string
+}
+
+export interface ApiResponse<T> {
+  status: number
+  data: T
+  message?: string
+}

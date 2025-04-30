@@ -1,15 +1,26 @@
-import { defineStore } from 'pinia'
 import { useAppStore } from './app'
 import { useStorage } from '@vueuse/core'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import router from '@/router'
 import { getUserInfo, login } from '@/services/user'
 import { ElLoading, ElMessage } from 'element-plus'
-import type { IUserInfo } from '@/typings/user'
+import type { IUserInfo, ILoginForm } from '@/typings/user'
 import { useRouterStore } from './router'
+import type { RouteRecordRaw } from 'vue-router'
+import type { RouterItem } from '@/typings/sys'
+
+// 定义应用配置类型
+interface AppConfig {
+  [key: string]: any // 配置项可以包含各种类型的值
+}
+
+// 定义应用存储类型
+interface AppStore {
+  config: AppConfig
+}
 
 export const useUserStore = defineStore('user', () => {
-  const appStore = useAppStore() as any
+  const appStore = useAppStore() as AppStore
 
   const userInfo = ref<Partial<IUserInfo>>({
     uuid: '',
@@ -20,7 +31,7 @@ export const useUserStore = defineStore('user', () => {
   const cookies = useCookies(['x-token'])
   const currentToken = token.value || cookies.get('x-token') || ''
 
-  const setUserInfo = (info: any) => {
+  const setUserInfo = (info: Partial<IUserInfo>) => {
     userInfo.value = info
 
     // setUserInfo 函数用于更新用户信息，并根据用户信息中的 originSetting 字段选择性地更新应用配置。
@@ -29,8 +40,8 @@ export const useUserStore = defineStore('user', () => {
     // 然后在应用启动时根据用户信息中的 originSetting 字段来更新应用配置。
     // 这样，用户每次登录后，应用都会根据用户的设置来显示深色或浅色的界面元素。
     if (info.originSetting) {
-      Object.keys(appStore.config).forEach((key: any) => {
-        if (info.originSetting[key] !== undefined) {
+      Object.keys(appStore.config).forEach((key: string) => {
+        if (info.originSetting && info.originSetting[key] !== undefined) {
           appStore.config[key] = info.originSetting[key]
         }
       })
@@ -54,8 +65,8 @@ export const useUserStore = defineStore('user', () => {
     localStorage.removeItem('originSetting')
   }
 
-  const loadingInstance = ref<any>(null)
-  const LoginIn = async (loginInfo: any) => {
+  const loadingInstance = ref<ReturnType<typeof ElLoading.service> | null>(null)
+  const LoginIn = async (loginInfo: ILoginForm) => {
     try {
       loadingInstance.value = ElLoading.service({
         fullscreen: true,
@@ -78,15 +89,16 @@ export const useUserStore = defineStore('user', () => {
       const asyncRouters = routerStore.asyncRouters
 
       // 3. 将动态路由注册到路由表里
-      asyncRouters.forEach((route: any) => {
-        router.addRoute(route)
+      asyncRouters.forEach((route: RouterItem) => {
+        router.addRoute(route as unknown as RouteRecordRaw)
       })
 
       // 4. 检查路由表中是否存在用户权限里的默认路由。若不存在，显示错误信息；若存在，跳转到该默认路由。
-      if (!router.hasRoute(userInfo?.value?.authority?.defaultRouter as any)) {
+      const defaultRouter = userInfo?.value?.authority?.defaultRouter
+      if (defaultRouter && !router.hasRoute(defaultRouter)) {
         ElMessage.error('请联系管理员进行授权')
-      } else {
-        await router.replace({ name: userInfo?.value?.authority?.defaultRouter })
+      } else if (defaultRouter) {
+        await router.replace({ name: defaultRouter })
       }
 
       // 5. 检测用户的操作系统类型，将结果存储到 localStorage 中。
