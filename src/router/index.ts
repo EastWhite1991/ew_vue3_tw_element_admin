@@ -17,23 +17,6 @@ const router: Router = createRouter({
       name: 'login',
       component: () => import('@/views/auth/Login.vue'),
     },
-    {
-      path: '/401',
-      name: '401',
-      component: () => import('@/views/error/401.vue'),
-      meta: { title: '401' },
-    },
-    {
-      path: '/404',
-      name: 'notfound',
-      component: () => import('@/views/error/404.vue'),
-    },
-    {
-      path: '/500',
-      name: '500',
-      component: () => import('@/views/error/500.vue'),
-      meta: { title: '500' },
-    },
   ],
 })
 
