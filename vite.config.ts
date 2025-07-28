@@ -14,7 +14,18 @@ const aliasPath = (path: string) => {
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_')
-  console.log('🚀 ~ defineConfig ~ env:', env)
+
+  /*
+  可以将env中的变量赋值给process.env，也可以直接用上面的env变量
+  const NODE_ENV = mode || 'development'
+  const envFiles = [`.env.${NODE_ENV}`]
+  for (const file of envFiles) {
+    const envConfig = dotenv.parse(fs.readFileSync(file))
+    for (const k in envConfig) {
+      process.env[k] = envConfig[k]
+    }
+  }
+  */
 
   return {
     css: {
@@ -60,31 +71,30 @@ export default defineConfig(({ mode }) => {
       },
     },
     // 开发服务器选项
-    //  server: {
-    //   // 指定服务器应该监听哪个 IP 地址。
-    //   host: true,
-    //   // 服务器端口。
-    //   port: env.VITE_PORT,
-    //   // 若端口已被占用则会直接退出
-    //   strictPort: true,
-    //   // 自动打开浏览器。
-    //   open: false,
-    //   // 代理。
-    //   proxy: {
-    //     '^/slipper/websocket': {
-    //       target: 'https://api.admin.gumingchen.icu',
-    //       changeOrigin: true,
-    //       ws: true
-    //     },
-    //     '^/slipper': {
-    //       target: 'https://api.admin.gumingchen.icu',
-    //       changeOrigin: true,
-    //     },
-    //   },
-    //   // 为开发服务器配置 CORS。
-    //   cors: true
-    // },
-
+    server: {
+      // 指定服务器应该监听哪个 IP 地址。
+      host: true,
+      // host: '0.0.0.0', // 可选，用于局域网调试
+      port: 5173,
+      proxy: {
+        // 匹配所有以 /api 开头的请求
+        [env.VITE_BASE_API as string]: {
+          // 需要代理的路径   例如 '/api'
+          target: `${env.VITE_BASE_PATH}:${env.VITE_SERVER_PORT}/`, // 代理到 目标路径
+          changeOrigin: true,
+          rewrite: (path) => {
+            return path.replace(new RegExp('^' + env.VITE_BASE_API), '')
+          },
+          secure: false,
+        },
+      },
+      // 为开发服务器配置 CORS。
+      cors: true,
+      // 若端口已被占用则会直接退出
+      strictPort: true,
+      // 自动打开浏览器。
+      open: false,
+    },
     // 构建选项
     // build: {
     //   // 设置最终构建的浏览器兼容目标。
