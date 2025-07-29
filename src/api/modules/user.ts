@@ -1,4 +1,4 @@
-import { userAlova } from '..'
+import { alovaInstance } from '..'
 
 // 获取验证码信息
-export const getUserCaptcha = () => userAlova.Post('/base/captcha')
+export const getUserCaptcha = () => alovaInstance.Post('/base/captcha')

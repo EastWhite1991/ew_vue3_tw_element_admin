@@ -83,10 +83,10 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { useRequest } from 'alova/client'
-import { userAlova } from '@/api'
 import { ElMessage } from 'element-plus'
 import { checkPassword, checkUsername } from '@/utils/user'
 import type { LoginFormData } from '@/typings/user'
+import { alovaInstance } from '@/api'
 
 defineOptions({
   name: 'LoginView',
@@ -115,7 +115,7 @@ const loginFormRules = {
 }
 
 // 使用alova实例创建method并传给useRequest即可发送请求
-const { send } = useRequest(userAlova.Post('/base/captcha'), {
+const { send } = useRequest(alovaInstance.Post('/base/captcha'), {
   immediate: true, // 是否立即发送请求，默认为true
 }).onSuccess((event: any) => {
   const res = event?.data?.data as any // 当前请求的响应数据
@@ -148,20 +148,10 @@ const submitForm = () => {
     }
 
     // 通过验证
-    const res: any = await userAlova.Post('/base/login', loginFormData)
+    const res: any = await alovaInstance.Post('/base/login', loginFormData)
     if (res.code === 0 && res.data) {
-      ElMessage({
-        type: 'success',
-        message: res.msg,
-        showClose: true,
-      })
       return true
     } else {
-      ElMessage({
-        type: 'error',
-        message: '登录失败',
-        showClose: true,
-      })
       send()
       return false
     }
@@ -169,22 +159,16 @@ const submitForm = () => {
 }
 
 const checkDB = async () => {
-  const res = await userAlova.Post('/init/checkdb')
+  const res = await alovaInstance.Post('/init/checkdb')
   return res
 }
 
 const checkInit = async () => {
   const res: any = await checkDB()
-  console.log('🚀 ~ checkInit ~ res:', res)
   if (res.code === 0) {
     if (res.data?.needInit) {
       // userStore.NeedInit()
       // await router.push({ name: 'Init' })
-    } else {
-      ElMessage({
-        type: 'info',
-        message: '已配置数据库信息，无法初始化',
-      })
     }
   }
 }
