@@ -13,3 +13,7 @@ start:
 	pnpm dev
 
 all: start-mock start
+
+shdev:
+	@echo "Starting the project with shell script..."
+	sh dev.sh

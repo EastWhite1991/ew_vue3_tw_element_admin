@@ -126,6 +126,12 @@ pnpm install concurrently --save-dev
 
 ```sh
 make all
+make shdev
+sh dev.sh
 # or
 pnpm start:all
 ```
+
+# 学习资源
+
+1. [🍀 基于 vitesse-uni-app 深度整合 Wot UI 组件库的 uni-app 快速起手项目](https://github.com/Moonofweisheng/wot-demo/tree/bad5726a8fec35db081810bd76f334df8f06001d)
