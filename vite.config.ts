@@ -13,7 +13,8 @@ const aliasPath = (path: string) => {
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), 'VITE_')
+  const root = process.cwd()
+  const env = loadEnv(mode, root)
 
   /*
   可以将env中的变量赋值给process.env，也可以直接用上面的env变量
@@ -55,7 +56,7 @@ export default defineConfig(({ mode }) => {
       }),
     ],
     // 项目根目录（index.html 文件所在的位置）。可以是一个绝对路径，或者一个相对于该配置文件本身的相对路径。
-    root: process.cwd(),
+    root,
     // 公共基础路径。
     base: './',
     // 作为静态资源服务的文件夹。

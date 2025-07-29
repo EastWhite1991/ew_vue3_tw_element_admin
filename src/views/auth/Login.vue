@@ -2,10 +2,12 @@
   <div id="userLayout">
     <div class="flex min-h-screen flex-col items-center justify-center">
       <div class="mb-9">
-        <p class="text-center text-4xl font-bold">
+        <p
+          class="bg-gradient-to-r from-red-600 via-purple-600 to-indigo-700 bg-clip-text text-center text-4xl font-bold text-transparent"
+        >
           {{ $appInfo.appName }}
         </p>
-        <p class="mt-2.5 text-center text-sm font-normal text-gray-500">
+        <p class="mt-2.5 text-center text-sm font-normal text-gray-500 dark:text-gray-400">
           A management platform using Golang and Vue3
         </p>
       </div>
@@ -86,7 +88,7 @@ import { useRequest } from 'alova/client'
 import { ElMessage } from 'element-plus'
 import { checkPassword, checkUsername } from '@/utils/user'
 import type { LoginFormData } from '@/typings/user'
-import { alovaInstance } from '@/api'
+import { alovaInstance } from '@/api/core'
 
 defineOptions({
   name: 'LoginView',

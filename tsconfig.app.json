@@ -1,12 +1,31 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "docs/permission0.ts", "docs/permission1.ts"],
-  "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-
+    "typeRoots": ["./node_modules/@types/", "./typings"],
     "paths": {
       "@/*": ["./src/*"]
     }
-  }
+  },
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "docs/permission0.ts",
+    "docs/permission1.ts",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "types/**/*.d.ts",
+    "types/**/*.ts",
+    "typings/**/*.d.ts",
+    "typings/**/*.ts",
+    "viteUtils/**/*.ts",
+    "viteUtils/**/*.d.ts",
+    "mock/**/*.ts",
+    "components.d.ts",
+    "vite.config.ts"
+  ],
+  "exclude": ["src/**/__tests__/*", "node_modules", "dist", "**/*.js"]
 }

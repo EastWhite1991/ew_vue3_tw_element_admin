@@ -22,6 +22,22 @@ export const alovaInstance = createAlova({
   statesHook: VueHook,
   // 请求适配器，推荐使用fetch请求适配器
   requestAdapter: adapterFetch(),
+  // 关闭全局请求缓存
+  cacheFor: null,
+  // 全局缓存配置
+  // cacheFor: {
+  //   POST: {
+  //     mode: 'memory',
+  //     expire: 60 * 10 * 1000
+  //   },
+  //   GET: {
+  //     mode: 'memory',
+  //     expire: 60 * 10 * 1000
+  //   },
+  //   HEAD: 60 * 10 * 1000 // 统一设置HEAD请求的缓存模式
+  // },
+  // 在开发环境开启缓存命中日志
+  cacheLogger: import.meta.env.DEV,
   // 全局请求拦截器
   beforeRequest(method: Method) {
     if (method.config.ignoreToken) {
@@ -39,6 +55,7 @@ export const alovaInstance = createAlova({
   // 全局的响应拦截器
   responded: {
     onSuccess: async (response) => {
+      console.log(import.meta.env)
       if (response.status !== 200) {
         throw new Error(`[${response.status}]${response.statusText}`)
       }
