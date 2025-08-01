@@ -83,21 +83,24 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
 import { useRequest } from 'alova/client'
 import { ElMessage } from 'element-plus'
 import { checkPassword, checkUsername } from '@/utils/user'
-import type { LoginFormData } from '@/typings/user'
+import type { ILoginFormData } from '@/typings/user'
 import { alovaInstance } from '@/api/core'
+import { useUserStore } from '@/pinia/modules/user'
 
 defineOptions({
   name: 'LoginView',
 })
 
+const instance = getCurrentInstance()
+const $appInfo = instance?.appContext.config.globalProperties.$appInfo
+
 // 登录相关操作
 const loginForm = ref<any>(null)
 const picPath = ref('')
-const loginFormData = reactive<LoginFormData>({
+const loginFormData = reactive<ILoginFormData>({
   username: 'admin',
   password: '',
   captcha: '',
@@ -149,14 +152,15 @@ const submitForm = () => {
       return false
     }
 
+    const userStore = useUserStore()
     // 通过验证
-    const res: any = await alovaInstance.Post('/base/login', loginFormData)
-    if (res.code === 0 && res.data) {
-      return true
-    } else {
+    const flag: boolean = await userStore.LoginIn(loginFormData)
+    if (!flag) {
       send()
       return false
     }
+
+    return true
   })
 }
 

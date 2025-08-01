@@ -1,4 +1,4 @@
-export interface LoginFormData {
+export interface ILoginFormData {
   username: string
   password: string
   captcha: string
